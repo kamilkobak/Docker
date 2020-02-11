@@ -5,7 +5,7 @@
 wget https://raw.githubusercontent.com/kamilkobak/docker/master/nextcloud/docker-compose.yml
 ```
 
-2. Run:
+2. Run
 ```bash
 docker-compose up -d
 ```
@@ -24,6 +24,5 @@ ufw allow https
 
 ```
 
-3. Go to http://your_IP_address. <BR />
-When you first access your Nextcloud, the setup wizard will appear and ask you to choose an administrator account, password and the database connection. For the database use `mariadb` as host and `nextcloud` as table and user name. Also enter the password you chose in your docker-compose.yml file.
+3. When you first access your Nextcloud, the setup wizard will appear and ask you to choose an administrator account, password and the database connection. For the database use `mariadb` as host and `nextcloud` as table and user name. Also enter the password you chose in your docker-compose.yml file.
 
