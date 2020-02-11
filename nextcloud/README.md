@@ -5,7 +5,7 @@
 wget https://raw.githubusercontent.com/kamilkobak/docker/master/nextcloud/docker-compose.yml
 ```
 
-2. Run
+2. Change the password in the file and run it
 ```bash
 docker-compose up -d
 ```
