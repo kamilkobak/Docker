@@ -34,7 +34,7 @@ mkdir /var/lib/docker/volumes/nextcloud_apache2/_data/ssl
 cd /var/lib/docker/volumes/nextcloud_apache2/_data/ssl
 sudo openssl req -x509 -nodes -days 1095 -newkey rsa:2048 -keyout nextcloud.key -out nextcloud.pem
 cd /var/lib/docker/volumes/nextcloud_apache2/_data/sites-enabled/
-wget https://github.com/kamilkobak/docker/blob/master/nextcloud/ssl.conf
+wget https://raw.githubusercontent.com/kamilkobak/docker/master/nextcloud/ssl.conf
 docker exec nextcloud a2enmod ssl
 docker restart nextcloud
 docker logs nextcloud
