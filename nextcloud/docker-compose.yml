@@ -1,9 +1,10 @@
 #NextCloud+MariaDB+Redis
 #Kamil Kobak
-version: '2'
+version: '3'
 
 volumes:
   nextcloud:
+  apache2:
   db:
 
 services:
@@ -15,14 +16,14 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=jakieshasloroota
-      - MYSQL_PASSWORD=jakieshaslousera
+      - MYSQL_ROOT_PASSWORD=SomeRootPassword
+      - MYSQL_PASSWORD=SomeUserPassword
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - TZ=Europe/Warsaw
 
   redis:
-    container_name: redis
+    container_name: redis          
     image: redis:alpine
     restart: always
 
@@ -40,6 +41,7 @@ services:
       - db
     volumes:
       - nextcloud:/var/www/html
+      - apache2:/etc/apache2
     depends_on:
       - db
       - redis
