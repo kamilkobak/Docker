@@ -1,4 +1,4 @@
-# NextCloud+MariaDB+Redis
+# NextCloud+MariaDB+Redis+PhpMyAdmin
 
 1. Get `docker-compose.yml` file
 ```bash
