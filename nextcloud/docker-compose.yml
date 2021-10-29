@@ -1,48 +1,73 @@
-#NextCloud+MariaDB+Redis
+#NextCloud+MariaDB+Redis+PhpMyAdmin
 #Kamil Kobak
-version: '3'
-
-volumes:
-  nextcloud:
-  apache2:
-  db:
+version: '3.7'
 
 services:
-  db:
-    container_name: mariadb          
-    image: mariadb
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+  nc:
+    image: nextcloud:stable
+    container_name: nextcloud
     restart: unless-stopped
-    volumes:
-      - db:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=SomeRootPassword
-      - MYSQL_PASSWORD=SomeUserPassword
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - TZ=Europe/Warsaw
-
-  redis:
-    container_name: redis          
-    image: redis:alpine
-    restart: always
-
-  nextcloud:
-    container_name: nextcloud          
-    restart: unless-stopped
-    image: nextcloud
-    environment:
-      - MYSQL_HOST=mariadb
-      - REDIS_HOST=redis    
     ports:
       - 80:80
       - 443:443
-    links:
-      - db
     volumes:
-      - nextcloud:/var/www/html
-      - apache2:/etc/apache2
+      - nc_data:/var/www/html
+      - apachie2:/etc/apache2
+      - ./php.ini:/usr/local/etc/php/conf.d/php-custom.ini
+    networks:
+      - redisnet
+      - dbnet
+    environment:
+      - REDIS_HOST=redis
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=SomePassword
     depends_on:
       - db
       - redis
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    networks:
+      - redisnet
+
+  db:
+    image: mariadb:10.5.9
+    container_name: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - dbnet
+    environment:
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_ROOT_PASSWORD=SomeRootPassword
+      - MYSQL_PASSWORD=SomePassword
+      - TZ=Europe/Warsaw
+
+  phpmyadmin:
+    depends_on:
+      - db
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    ports:
+      - 8082:80
+    environment:
+      PMA_HOST: db
+    networks:
+      - dbnet
+
+volumes:
+  db_data:
+  nc_data:
+  apache2:
+networks:
+  dbnet:
+  redisnet:
 
