@@ -3,6 +3,7 @@
 1. Get `docker-compose.yml` file
 ```bash
 wget https://raw.githubusercontent.com/kamilkobak/docker/master/nextcloud/docker-compose.yml
+wget https://raw.githubusercontent.com/kamilkobak/docker/master/nextcloud/php.ini
 ```
 
 2. Change the password in the file and run it
